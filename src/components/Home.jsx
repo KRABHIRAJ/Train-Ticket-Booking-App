@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { FeatureCard, TrainSearch } from "../components";
 import { featureCardDetails } from "../utils/constants/constant";
+import { getAutoSuggestions } from "../utils/apiCalls";
 
 function Home() {
+  useEffect(() => {
+     getAutoSuggestions('pat');
+  },[])
   return (
     <div>
       <div className="max-w-[900px] m-auto">
