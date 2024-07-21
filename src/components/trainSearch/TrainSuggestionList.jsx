@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 const TrainSuggestionList = ({stations, setStn, clearInputs}) => {
   const setSelectedStation = (station) => {
-    console.log('station >>',station);
     setStn(station);
     clearInputs();
   }

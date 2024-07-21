@@ -25,6 +25,7 @@ const TrainSearch = () => {
   const destRef = useRef();
   const navigate = useNavigate();
 
+
   const todayDate = new Date();
   const maxDate = new Date(todayDate);
 
@@ -77,14 +78,15 @@ const TrainSearch = () => {
 
   const searchForTrain = () => {
     const formattedDoj = getFormattedDate(doj);
-    const srcStationCode = sourceStation?.stationCode;
-    const destStationCode = destStn?.stationCode;
-    const data = JSON.stringify({
+    const searchData = {
       doj:formattedDoj,
-      srcStationCode:srcStationCode,
-      destStationCode:destStationCode
-    })
-    if(srcStationCode !== destStationCode){
+      srcStationCode:sourceStn?.stationCode,
+      sourceStationName: sourceStn?.stationName,
+      destStationCode:destStn?.stationCode,
+      destStationName: destStn?.stationName
+    }
+    const data = JSON.stringify(searchData);
+    if(searchData?.srcStationCode !== searchData?.destStationCode){
       navigate(`/${data}`)
     }
   }
