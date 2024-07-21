@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   destinationStation,
   sourceStation,
@@ -24,12 +24,30 @@ const TrainSearch = () => {
   const sourceRef = useRef();
   const destRef = useRef();
   const navigate = useNavigate();
+  const divRef = useRef(null);
 
+  const handleBlurEvent = () => {
+      setTimeout(() => {
+        clearInputs();
+        isSourceStnOpen ? setIsSourceStnOpen(false) : setIsDestStnOpen(false);
+      },500)
+  };
 
   const todayDate = new Date();
   const maxDate = new Date(todayDate);
 
   maxDate.setDate(maxDate.getDate() + 120);
+
+  useEffect(() => {
+    const srcStation = JSON.parse(localStorage.getItem('srcStation'));
+    const destStation = JSON.parse(localStorage.getItem('destStation'));
+    const doj = localStorage.getItem('doj');
+    if(srcStation && destStation && doj){
+      setSourceStn(srcStation);
+      setDestStn(destStation);
+      setDoj(doj)
+    }
+  }, []);
 
   const showSourceStnInput = () => {
     clearInputs();
@@ -46,6 +64,7 @@ const TrainSearch = () => {
     });
   };
 
+
   const setAutoSuggetedStation = async (e) => {
     setStnInput(e.target.value);
     const val = e.target.value;
@@ -61,12 +80,14 @@ const TrainSearch = () => {
       localStorage.setItem("autoSuggestion", JSON.stringify(stations));
     }
   };
+  
+
 
   const clearInputs = () => {
     setSuggestedStns([]);
     setStnInput("");
-    setIsSourceStnOpen(false);
-    setIsDestStnOpen(false);
+    isSourceStnOpen && setIsSourceStnOpen(false);
+    isDestStnOpen && setIsDestStnOpen(false);
     localStorage.removeItem("autoSuggestion");
   };
 
@@ -87,6 +108,9 @@ const TrainSearch = () => {
     }
     const data = JSON.stringify(searchData);
     if(searchData?.srcStationCode !== searchData?.destStationCode){
+      localStorage.setItem('srcStation', JSON.stringify(sourceStn));
+      localStorage.setItem('destStation', JSON.stringify(destStn));
+      localStorage.setItem('doj', doj);
       navigate(`/${data}`)
     }
   }
@@ -98,7 +122,7 @@ const TrainSearch = () => {
           src="https://www.confirmtkt.com/img/icons/ic-search-from-desktop.svg"
           alt="from-img"
         />
-        <div className="relative">
+        <div className="relative" ref={divRef}>
           <p className="text-gray-400 text-[14px]">From</p>
           <p onClick={showSourceStnInput} className="font-[600] line-clamp-1">
             {sourceStn?.stationCode} - {sourceStn?.stationName}
@@ -110,6 +134,7 @@ const TrainSearch = () => {
                   ref={sourceRef}
                   className="outline-none bg-gray-50 rounded-lg px-4 py-2 w-[200px]"
                   type="text"
+                  onBlur={handleBlurEvent}
                   placeholder="Enter From"
                   value={stnInput}
                   onChange={(e) => setAutoSuggetedStation(e)}
@@ -131,7 +156,7 @@ const TrainSearch = () => {
       <div onClick={swapStations} className="cursor-pointer mx-8">
         <SwapHorizontalCircleIcon sx={{ color: "#BDBDBD", fontSize: 35 }} />
       </div>
-      <div className="flex items-center gap-x-3 border-r border-gray-300 w-[240px]">
+      <div ref={divRef} className="flex items-center gap-x-3 border-r border-gray-300 w-[240px]">
         <img
           src="https://www.confirmtkt.com/img/icons/ic-search-to-desktop.svg"
           alt="to-img"
@@ -148,6 +173,7 @@ const TrainSearch = () => {
                   ref={destRef}
                   className="outline-none bg-gray-50 rounded-lg px-4 py-2 w-[200px]"
                   type="text"
+                  onBlur={handleBlurEvent}
                   placeholder="Enter To"
                   value={stnInput}
                   onChange={(e) => setAutoSuggetedStation(e)}
