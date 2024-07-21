@@ -6,6 +6,7 @@ export const sourceStation = {
   majorStn: false,
 };
 
+
 export const destinationStation = {
   stationCode: "KOAA",
   stationName: "Kolkata Chitpur",
@@ -14,10 +15,6 @@ export const destinationStation = {
   majorStn: false,
 };
 
-export const dateOfJourney = {
-  type: "doj",
-  data: "2024-07-16",
-};
 
 export const featureCardDetails = [
   {

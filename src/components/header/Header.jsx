@@ -3,7 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 function Header() {
   return (
     <div className="bg-white p-2">
-        <div className="max-w-[900px] m-auto flex justify-between items-center">
+        <div className="max-w-[1000px] m-auto flex justify-between items-center">
             <div className="cursor-pointer">
                 <img className="h-[30px] object-cover" src="https://www.confirmtkt.com/img/brand/ctkt-logo-colour.png" alt="logo" />
             </div>

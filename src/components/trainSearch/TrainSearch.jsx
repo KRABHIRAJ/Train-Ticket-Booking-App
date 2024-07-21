@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import {
-  dateOfJourney,
   destinationStation,
   sourceStation,
 } from "../../utils/constants/constant";
@@ -11,18 +10,20 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { getAutoSuggestions } from "../../utils/apiCalls";
 import TrainSuggestionList from "./TrainSuggestionList";
+import { getFormattedDate } from "../../utils/helper/helper";
+import { useNavigate } from "react-router-dom";
 
 const TrainSearch = () => {
   const [sourceStn, setSourceStn] = useState(sourceStation);
   const [destStn, setDestStn] = useState(destinationStation);
   const [isSourceStnOpen, setIsSourceStnOpen] = useState(false);
   const [isDestStnOpen, setIsDestStnOpen] = useState(false);
-  const [doj, setDoj] = useState(dateOfJourney);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [doj, setDoj] = useState(new Date());
   const [suggestedStns, setSuggestedStns] = useState([]);
   const [stnInput, setStnInput] = useState("");
   const sourceRef = useRef();
   const destRef = useRef();
+  const navigate = useNavigate();
 
   const todayDate = new Date();
   const maxDate = new Date(todayDate);
@@ -30,12 +31,14 @@ const TrainSearch = () => {
   maxDate.setDate(maxDate.getDate() + 120);
 
   const showSourceStnInput = () => {
+    clearInputs();
     setIsSourceStnOpen(true);
     setTimeout(() => {
       sourceRef?.current?.focus();
     });
   };
   const showDestStnInput = () => {
+    clearInputs();
     setIsDestStnOpen(true);
     setTimeout(() => {
       destRef?.current?.focus();
@@ -61,20 +64,42 @@ const TrainSearch = () => {
   const clearInputs = () => {
     setSuggestedStns([]);
     setStnInput("");
+    setIsSourceStnOpen(false);
+    setIsDestStnOpen(false);
     localStorage.removeItem("autoSuggestion");
   };
 
+  const swapStations = () => {
+    const temp = sourceStn;
+    setSourceStn(destStn);
+    setDestStn(temp);
+  }
+
+  const searchForTrain = () => {
+    const formattedDoj = getFormattedDate(doj);
+    const srcStationCode = sourceStation?.stationCode;
+    const destStationCode = destStn?.stationCode;
+    const data = JSON.stringify({
+      doj:formattedDoj,
+      srcStationCode:srcStationCode,
+      destStationCode:destStationCode
+    })
+    if(srcStationCode !== destStationCode){
+      navigate(`/${data}`)
+    }
+  }
+
   return (
     <div className="flex items-center p-4 border border-gray-200 bg-white rounded-lg mt-8">
-      <div className="flex items-center gap-x-3 mr-8">
+      <div className="flex items-center gap-x-3 w-[240px]">
         <img
           src="https://www.confirmtkt.com/img/icons/ic-search-from-desktop.svg"
           alt="from-img"
         />
         <div className="relative">
           <p className="text-gray-400 text-[14px]">From</p>
-          <p onClick={showSourceStnInput} className="font-[600]">
-            {sourceStation?.stationCode} - {sourceStation?.stationName}
+          <p onClick={showSourceStnInput} className="font-[600] line-clamp-1">
+            {sourceStn?.stationCode} - {sourceStn?.stationName}
           </p>
           {isSourceStnOpen && (
             <div>
@@ -83,10 +108,6 @@ const TrainSearch = () => {
                   ref={sourceRef}
                   className="outline-none bg-gray-50 rounded-lg px-4 py-2 w-[200px]"
                   type="text"
-                  onBlur={() => {
-                    setIsSourceStnOpen(false);
-                    clearInputs();
-                  }}
                   placeholder="Enter From"
                   value={stnInput}
                   onChange={(e) => setAutoSuggetedStation(e)}
@@ -97,7 +118,7 @@ const TrainSearch = () => {
           {
             (isSourceStnOpen) && (
                 suggestedStns.length > 0 ? (<div className="bg-gray-50 absolute top-14 rounded-b-lg w-[200px] px-4">
-                    <TrainSuggestionList stations = {suggestedStns} />
+                    <TrainSuggestionList setStn = {setSourceStn} clearInputs={clearInputs} stations = {suggestedStns} />
                 </div>) : (<div className="bg-gray-50 absolute top-14 rounded-b-lg w-[200px] p-4">
                     <p>No suggested Stations</p>
                 </div>)
@@ -105,17 +126,17 @@ const TrainSearch = () => {
           }
         </div>
       </div>
-      <div className="cursor-pointer">
+      <div onClick={swapStations} className="cursor-pointer mx-8">
         <SwapHorizontalCircleIcon sx={{ color: "#BDBDBD", fontSize: 35 }} />
       </div>
-      <div className="flex items-center gap-x-3 mx-8 pr-8 border-r border-gray-300">
+      <div className="flex items-center gap-x-3 border-r border-gray-300 w-[240px]">
         <img
           src="https://www.confirmtkt.com/img/icons/ic-search-to-desktop.svg"
           alt="to-img"
         />
         <div className="relative">
           <p className="text-gray-400 text-[14px]">To</p>
-          <p onClick={showDestStnInput} className="font-[600]">
+          <p onClick={showDestStnInput} className="font-[600] line-clamp-1">
             {destStn?.stationCode} - {destStn?.stationName}
           </p>
           {isDestStnOpen && (
@@ -125,10 +146,6 @@ const TrainSearch = () => {
                   ref={destRef}
                   className="outline-none bg-gray-50 rounded-lg px-4 py-2 w-[200px]"
                   type="text"
-                  onBlur={() => {
-                    setIsDestStnOpen(false);
-                    clearInputs();
-                  }}
                   placeholder="Enter To"
                   value={stnInput}
                   onChange={(e) => setAutoSuggetedStation(e)}
@@ -139,7 +156,7 @@ const TrainSearch = () => {
           {
             (isDestStnOpen) && (
                 suggestedStns.length > 0 ? (<div className="bg-gray-50 absolute top-14 rounded-b-lg w-[200px] px-4">
-                    <TrainSuggestionList stations = {suggestedStns} />
+                    <TrainSuggestionList setStn = {setDestStn} clearInputs={clearInputs} stations = {suggestedStns} />
                 </div>) : (<div className="bg-gray-50 absolute top-14 rounded-b-lg w-[200px] p-4">
                     <p>No suggested Stations</p>
                 </div>)
@@ -147,21 +164,28 @@ const TrainSearch = () => {
           }
         </div>
       </div>
-      <div className="mr-8">
-        <div>
-          <p className="text-gray-400 text-[14px]">Departure Date</p>
-          <DatePicker
-            className="font-[600]"
-            onChange={setSelectedDate}
-            value={selectedDate}
-            calendarIcon={null}
-            clearIcon={null}
-            minDate={todayDate}
-            maxDate={maxDate}
+      <div className="w-[180px] ml-8">
+        <div className="flex items-center gap-x-3">
+          <img
+            src="https://www.confirmtkt.com/img/icons/ic-search-to-desktop.svg"
+            alt="to-img"
           />
+          <div >
+            <p className="text-gray-400 text-[14px]">Departure Date</p>
+            <DatePicker
+              className="font-[600]"
+              onChange={setDoj}
+              value={doj}
+              calendarIcon={null}
+              clearIcon={null}
+              format="dd-MM-yyyy"
+              minDate={todayDate}
+              maxDate={maxDate}
+            />
+        </div>
         </div>
       </div>
-      <div className="bg-[#43A64E] flex-1 ml-8 h-[100%] rounded-lg py-4 cursor-pointer min-w-[140px]">
+      <div onClick={searchForTrain} className="bg-[#43A64E] flex-1 ml-8 h-[100%] rounded-lg py-4 cursor-pointer min-w-[100px]">
         <p className="text-white text-center text-[20px] font-[600]">SEARCH</p>
       </div>
     </div>

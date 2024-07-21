@@ -1,15 +1,10 @@
-import { useEffect } from "react";
 import { FeatureCard, TrainSearch } from "../components";
 import { featureCardDetails } from "../utils/constants/constant";
-import { getAutoSuggestions } from "../utils/apiCalls";
 
 function Home() {
-  useEffect(() => {
-     getAutoSuggestions('pat');
-  },[])
   return (
     <div>
-      <div className="max-w-[900px] m-auto">
+      <div className="max-w-[1000px] m-auto">
         <div>
           <p className="font-[700] text-[#42A047] text-center text-[30px] pt-10">
             Fastest Train Ticket Booking
