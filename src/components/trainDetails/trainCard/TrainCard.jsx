@@ -6,6 +6,9 @@ const TrainCard = ({ trainData }) => {
   const duration = trainData?.duration?.split(":");
   const avlClasses = trainData?.avlClasses?.Array;
 
+  const openSchedulePage = () => {
+    window.open(`https://www.confirmtkt.com/train-schedule/${trainData?.trainNumber}`);
+  }
 
   return (
     <div className="bg-white p-6 rounded-lg my-4">
@@ -31,16 +34,16 @@ const TrainCard = ({ trainData }) => {
             {trainData?.departureTime} {trainData?.toStnCode}
           </p>
         </div>
-        <button className="text-[#42A04D] font-[600] hover:underline text-[14px]">
+        <button onClick={openSchedulePage} className="text-[#42A04D] font-[600] hover:underline text-[14px]">
           View Schedule
         </button>
       </div>
       <div className="flex items-center gap-x-4 overflow-scroll no-scrollbar">
-        {
-          avlClasses?.map((cls) => {
-            return <TrainClassCard key={cls} data={trainData?.avaiblitycache?.[cls]} />
-          })
-        }
+        {avlClasses?.map((cls) => {
+          return (
+            <TrainClassCard key={cls} data={trainData?.avaiblitycache?.[cls]} />
+          );
+        })}
       </div>
     </div>
   );
