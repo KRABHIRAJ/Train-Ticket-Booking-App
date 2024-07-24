@@ -1,27 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    trainSearchData: {},
-    srcAutoSuggestion: [],
-    destAutoSuggestion: [],
-}
+  trainData: [],
+  quota: "GN",
+  selectedSrcStationList: [],
+  selectedDestStationList: [],
+};
 
 const detailSlice = createSlice({
-    name:'detail',
-    initialState,
-    reducers:{
-        setSrcAutoSuggestion: (state, action) => {
-            state.srcAutoSuggestion = action.payload;
-        },
-        setDestAutoSuggestion: (state, action) => {
-            state.destAutoSuggestion = action.payload;
-        },
-        setTrainSearchData: (state, action) => {
-            state.trainSearchData = action.payload;
-        }
-    }
+  name: "detail",
+  initialState,
+  reducers: {
+    setselectedSrcStationList: (state, action) => {
+      state.selectedSrcStationList = [...action.payload];
+    },
+    setselectedDestStationList: (state, action) => {
+      state.selectedDestStationList = [...action.payload];
+    },
+    setTrainData: (state, action) => {
+      state.trainData = action.payload;
+    },
+    setQuota: (state, action) => {
+      state.quota = action.payload;
+    },
+  },
+});
 
-})
-
-export const {setDestAutoSuggestion, setSrcAutoSuggestion, setTrainSearchData} = detailSlice.actions;
+export const {
+  setselectedSrcStationList,
+  setselectedDestStationList,
+  setTrainData,
+  setQuota,
+} = detailSlice.actions;
 export default detailSlice.reducer;

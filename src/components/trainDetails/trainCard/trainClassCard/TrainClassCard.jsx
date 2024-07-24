@@ -16,8 +16,8 @@ const TrainClassCard = ({ data }) => {
             : "text-[#C74656]"
         }
       >
-        <p>{data?.Availability}</p>
-        <p className="text-[10px]">{data?.Prediction}</p>
+        <p>{data?.Availability  || 'NOT AVAILABLE'}</p>
+        <p className="text-[10px]">{data?.Prediction || 'No More Booking'}</p>
       </div>
     </div>
   );

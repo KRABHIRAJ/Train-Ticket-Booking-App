@@ -12,6 +12,8 @@ import { getAutoSuggestions } from "../../utils/apiCalls";
 import TrainSuggestionList from "./TrainSuggestionList";
 import { getFormattedDate } from "../../utils/helper/helper";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setQuota, setselectedDestStationList, setselectedSrcStationList } from "../../store/slices/detailSlice";
 
 const TrainSearch = () => {
   const [sourceStn, setSourceStn] = useState(sourceStation);
@@ -25,6 +27,7 @@ const TrainSearch = () => {
   const destRef = useRef();
   const navigate = useNavigate();
   const divRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleBlurEvent = () => {
       setTimeout(() => {

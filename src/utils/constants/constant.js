@@ -15,6 +15,25 @@ export const destinationStation = {
   majorStn: false,
 };
 
+export const quotas = [
+  {
+    label:'GENERAL',
+    value:'GN'
+  },
+  {
+    label:'TATKAL',
+    value:'TQ'
+  },
+  {
+    label:'LADIES',
+    value:'LD'
+  },
+  {
+    label:'SENIOR CITIZEN',
+    value:'SS'
+  }
+]
+
 
 export const featureCardDetails = [
   {
