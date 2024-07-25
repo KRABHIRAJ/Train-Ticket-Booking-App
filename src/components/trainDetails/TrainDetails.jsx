@@ -4,7 +4,7 @@ import { TrainCard, TrainDetailHeader } from "../index";
 import { useParams } from "react-router-dom";
 import TrainFilter from "./trainFilter/TrainFilter";
 import { useDispatch, useSelector } from "react-redux";
-import { setTrainData } from "../../store/slices/detailSlice";
+import { setDoj, setTrainData } from "../../store/slices/detailSlice";
 
 const TrainDetails = () => {
   const params = useParams();
@@ -28,6 +28,7 @@ const TrainDetails = () => {
       quota
     );
     dispatch(setTrainData(response?.data));
+    dispatch(setDoj(data?.doj));
   };
 
   useEffect(() => {

@@ -15,6 +15,16 @@ export const destinationStation = {
   majorStn: false,
 };
 
+export const ticketClassElaboration = {
+  'SL':'SLEEPER',
+  '3E': '3 AC ECONOMY',
+  '3A': 'THIRD AC',
+  '2A': 'SECOND AC',
+  '1A': 'FIRST AC',
+  '2S': 'SECOND SEATING',
+  'CC': 'AC CHAIR CAR'
+}
+
 export const quotas = [
   {
     label:'GENERAL',

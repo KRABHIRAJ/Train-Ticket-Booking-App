@@ -1,6 +1,8 @@
 import FeatureCard from "./featureCard/FeatureCard";
 import Header from "./header/Header";
 import Home from "./Home";
+import SixDaysAvailabilityCard from "./trainDetails/sixDaysAvailabilityCard/SixDaysAvailabilityCard";
+import TicketStatus from "./trainDetails/ticketStatus/TicketStatus";
 import TrainCard from "./trainDetails/trainCard/TrainCard";
 import TrainClassCard from "./trainDetails/trainCard/trainClassCard/TrainClassCard";
 import TrainRunningDays from "./trainDetails/trainCard/trainRunningDays/TrainRunningDays";
@@ -20,5 +22,8 @@ export {
   TrainCard,
   TrainRunningDays,
   TrainClassCard,
+  SixDaysAvailabilityCard,
+  TicketStatus,
+
 };
 

@@ -6,6 +6,8 @@ import { quotas } from "../../../utils/constants/constant";
 import { filterStationName } from "../../../utils/helper/helper";
 import { useDispatch } from "react-redux";
 import {
+  setAvailabilityDataCache,
+  setHideAvailability,
   setQuota,
   setselectedDestStationList,
   setselectedSrcStationList,
@@ -44,6 +46,13 @@ const TrainFilter = ({ data }) => {
   };
 
   const handleSelectedQuota = (val) => {
+    const payload = {
+      trainNumber: 'NULL',
+      ticketClass: 'NULL',
+      availabibityData: 'NULL',
+    };
+    dispatch(setAvailabilityDataCache(payload));
+    dispatch(setHideAvailability(true));
     dispatch(setQuota(val));
     setSelectedQuota(val);
   };
@@ -51,6 +60,9 @@ const TrainFilter = ({ data }) => {
   const resetFilters = () => {
     dispatch(setselectedSrcStationList([]));
     dispatch(setselectedDestStationList([]));
+    setSelectedDestStnList([]);
+    setSelectedSrcStnList([]);
+    setSelectedQuota('GN')
     dispatch(setQuota('GN'));
   };
 

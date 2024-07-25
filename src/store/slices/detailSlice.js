@@ -5,6 +5,9 @@ const initialState = {
   quota: "GN",
   selectedSrcStationList: [],
   selectedDestStationList: [],
+  availabilityDataCache: {},
+  hideAvailability: false,
+  doj: ''
 };
 
 const detailSlice = createSlice({
@@ -23,6 +26,25 @@ const detailSlice = createSlice({
     setQuota: (state, action) => {
       state.quota = action.payload;
     },
+    setDoj: (state, action) => {
+      state.doj = action.payload;
+    },
+    setHideAvailability: (state, action) => {
+      state.hideAvailability = action.payload;
+    },
+    setAvailabilityDataCache: (state, action) => {
+      const {trainNumber, ticketClass, availabibityData} = action.payload;
+      if( trainNumber === 'NULL'){
+        state.availabilityDataCache = {};
+      }else{
+        if(state.availabilityDataCache[trainNumber]){
+            state.availabilityDataCache[trainNumber][ticketClass] = availabibityData;
+        }else{
+          state.availabilityDataCache[trainNumber] = {};
+          state.availabilityDataCache[trainNumber][ticketClass] = availabibityData;
+        }
+      }
+    }
   },
 });
 
@@ -31,5 +53,9 @@ export const {
   setselectedDestStationList,
   setTrainData,
   setQuota,
+  setDoj,
+  setAvailabilityDataCache,
+  setHideAvailability
 } = detailSlice.actions;
+
 export default detailSlice.reducer;
