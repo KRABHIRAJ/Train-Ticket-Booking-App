@@ -1,8 +1,9 @@
-# React + Vite
+Created a web app for train ticket booking, enabling users to search for trains by date, check seat availability for the next 6 days across all classes, and view seat confirmation predictions.<br>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+=> Integrated ConfirmTkt API to fetch live data.<br>
+=> Implemented API caching using Redux to minimize redundant API calls and enhance performance.<br>
+=> Integrated seamless page transitions through efficient routing.<br>
+=> Developed multiple custom hooks to efficiently manage API calls.<br>
+=> Utilized Cloudflare Workers to create a proxy for resolving CORS issues.<br>
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Note:- It's a desktop app. So, please open it in a laptop or in desktop view in mobile for better experience.<br>
